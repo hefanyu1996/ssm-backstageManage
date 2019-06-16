@@ -13,13 +13,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/sysLog")
-public class SysLogController {
+public class SyslogController {
 
     @Autowired
     private LogService logService;
 
-    @RequestMapping("/findAll")
-    private ModelAndView findAll(@RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
+    @RequestMapping("/findAll.do")
+    public ModelAndView findAll(@RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
                                  @RequestParam(name = "pageSize",required = true,defaultValue = "5") Integer size) throws Exception {
         ModelAndView mv = new ModelAndView();
         List<SysLog> sysLogList = logService.findAll(page, size);
