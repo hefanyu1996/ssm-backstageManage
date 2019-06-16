@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/spring_security_demo/spring_security_demo.iml" filepath="$PROJECT_DIR$/spring_security_demo/spring_security_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_dao/ssm_backstage_dao.iml" filepath="$PROJECT_DIR$/ssm_backstage_dao/ssm_backstage_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_domain/ssm_backstage_domain.iml" filepath="$PROJECT_DIR$/ssm_backstage_domain/ssm_backstage_domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_manage.iml" filepath="$PROJECT_DIR$/ssm_backstage_manage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_service/ssm_backstage_service.iml" filepath="$PROJECT_DIR$/ssm_backstage_service/ssm_backstage_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_utils/ssm_backstage_utils.iml" filepath="$PROJECT_DIR$/ssm_backstage_utils/ssm_backstage_utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ssm_backstage_web/ssm_backstage_web.iml" filepath="$PROJECT_DIR$/ssm_backstage_web/ssm_backstage_web.iml" />
+    </modules>
+  </component>
+</project>
