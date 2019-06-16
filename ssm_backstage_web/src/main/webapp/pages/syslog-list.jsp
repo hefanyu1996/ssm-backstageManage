@@ -107,16 +107,6 @@
 					<div class="table-box">
 
 						<!--工具栏-->
-						<div class="pull-left">
-							<div class="form-group form-inline">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default" title="刷新"
-										onclick="window.location.reload();">
-										<i class="fa fa-refresh"></i> 刷新
-									</button>
-								</div>
-							</div>
-						</div>
 						<div class="box-tools pull-right">
 							<div class="has-feedback">
 								<input type="text" class="form-control input-sm"
@@ -131,8 +121,7 @@
 							class="table table-bordered table-striped table-hover dataTable">
 							<thead>
 								<tr>
-									<th class="" style="padding-right: 0px"><input id="selall"
-										type="checkbox" class="icheckbox_square-blue"></th>
+									<th><input id="selall" type="checkbox" class="icheckbox_square-blue"></th>
 									<th class="sorting_asc">ID</th>
 									<th class="sorting">访问时间</th>
 									<th class="sorting">访问用户</th>
@@ -143,7 +132,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${sysLogs}" var="syslog">
+								<c:forEach items="${pageInfo.list}" var="syslog">
 									<tr>
 										<td><input name="ids" type="checkbox"></td>
 										<td>${syslog.id}</td>
@@ -160,26 +149,6 @@
 						</table>
 						<!--数据列表/-->
 
-						<!--工具栏-->
-						<div class="pull-left">
-							<div class="form-group form-inline">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default" title="刷新"
-										onclick="window.location.reload();">
-										<i class="fa fa-refresh"></i> 刷新
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="box-tools pull-right">
-							<div class="has-feedback">
-								<input type="text" class="form-control input-sm"
-									placeholder="搜索"> <span
-									class="glyphicon glyphicon-search form-control-feedback"></span>
-							</div>
-						</div>
-						<!--工具栏/-->
-
 
 					</div>
 					<!-- 数据表格 /-->
@@ -191,30 +160,70 @@
 				<div class="box-footer">
 					<div class="pull-left">
 						<div class="form-group form-inline">
-							总共2 页，共14 条数据。 每页 <select class="form-control">
+							总共${pageInfo.pages}页，共${pageInfo.total}条数据。 每页
+							<select id="changePageSize" class="form-control" onchange="changePageSize()">
+								<option>显示</option>
+								<option>5</option>
+								<option>8</option>
 								<option>10</option>
 								<option>15</option>
 								<option>20</option>
-								<option>50</option>
-								<option>80</option>
-							</select> 条
+							</select>条
 						</div>
 					</div>
+					<c:if test="${pageInfo.pages>0}">
+						<div class="box-tools pull-right">
+							<ul class="pagination">
+								<li>
+									<a href="${pageContext.request.contextPath}/sysLog/findAll.do?page=1&pageSize=${changeSize}" aria-label="Previous">首页</a>
+								</li>
+								<li><a href="${pageContext.request.contextPath}/sysLog/findAll.do?page=${pageInfo.prePage}&pageSize=${changeSize}">上一页</a></li>
 
-					<div class="box-tools pull-right">
-						<ul class="pagination">
-							<li><a href="#" aria-label="Previous">首页</a></li>
-							<li><a href="#">上一页</a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">下一页</a></li>
-							<li><a href="#" aria-label="Next">尾页</a></li>
-						</ul>
+									<%-- 页码优化 --%>
+								<c:choose>
+									<c:when test="${pageInfo.pages <= 6}">
+										<c:set var="begin" value="1"/>
+										<c:set var="end" value="${pageInfo.pages}"/>
+									</c:when>
+									<%--页数超过了6页--%>
+									<c:otherwise>
+										<c:set var="begin" value="${pageInfo.pageNum - 2}"/>
+										<c:set var="end" value="${pageInfo.pageNum + 3}"/>
+										<%--如果begin减1后为0,设置起始页为1,最大页为6--%>
+										<c:if test="${begin -2 <= 0}">
+											<c:set var="begin" value="1"/>
+											<c:set var="end" value="6"/>
+										</c:if>
+										<%--如果end超过最大页,设置起始页=最大页-5--%>
+										<c:if test="${end > pageInfo.pages}">
+											<c:set var="begin" value="${pageInfo.pages - 5}"/>
+											<c:set var="end" value="${pageInfo.pages}"/>
+										</c:if>
+									</c:otherwise>
+								</c:choose>
+
+								<c:forEach begin="${begin}" end="${end}" var="i" >
+									<li <c:if test="${pageInfo.pageNum == i}">class="active"</c:if>><a href="${pageContext.request.contextPath}/sysLog/findAll.do?page=${i}&pageSize=${changeSize}">${i}</a></li>
+								</c:forEach>
+								<li><a href="${pageContext.request.contextPath}/sysLog/findAll.do?page=${pageInfo.pageNum+1}&pageSize=${changeSize}">下一页</a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/sysLog/findAll.do?page=${pageInfo.lastPage}&pageSize=${changeSize}" aria-label="Next">尾页</a>
+								</li>
+							</ul>
+						</div>
+					</c:if>
+					<div class="pull-left">
+						<div class="form-group form-inline" >
+							<div class="btn-group">
+								<button type="button" class="btn btn-default" title="刷新" onclick="location.reload()" style="margin-left: 200px">
+									<i class="fa fa-refresh"></i> 刷新
+								</button>
+								<button type="button" class="btn btn-default" title="返回" onclick="location.href='${pageContext.request.contextPath}/index.jsp'">
+									<i class="fa fa-reply"></i> 返回
+								</button>
+							</div>
+						</div>
 					</div>
-
 				</div>
 				<!-- /.box-footer-->
 
@@ -325,6 +334,15 @@
 		src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
 	<script>
+
+		function changePageSize() {
+			//获取下拉框的值
+			var pageSize = $("#changePageSize").val();
+			//向服务器发送请求，改变没页显示条数
+			location.href = "${pageContext.request.contextPath}/sysLog/findAll.do?page=${pageInfo.firstPage}&pageSize="
+					+ pageSize;
+		}
+
 		$(document).ready(function() {
 			// 选择框
 			$(".select2").select2();
