@@ -14,4 +14,5 @@ public interface LogDao{
     @Select("select * from syslog")
     List<SysLog> findAll() throws Exception;
 
+
 }

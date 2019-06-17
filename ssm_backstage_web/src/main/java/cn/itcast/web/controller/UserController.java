@@ -24,6 +24,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    HttpSession session;
+
     @RequestMapping("/findAll.do")
     public ModelAndView findAll(@RequestParam(name="page",required = true,defaultValue = "1") Integer page,
                                 @RequestParam(name="pageSize",required = true,defaultValue = "5")Integer size) throws Exception {
@@ -75,7 +78,7 @@ public class UserController {
     }
 
     @RequestMapping("/changeUserInfo")
-    public String changePassword(UserInfo userInfo,HttpSession session) throws Exception{
+    public String changePassword(UserInfo userInfo) throws Exception{
 
         userService.changeUserInfo(userInfo);
         UserInfo loginUser = userService.findByUsername(userInfo.getUsername());
@@ -85,7 +88,7 @@ public class UserController {
 
 
     @RequestMapping("/setLoginUser.do")
-    public String getLoginUser(HttpServletRequest request, HttpSession session) throws Exception {
+    public String getLoginUser(HttpServletRequest request) throws Exception {
         String username = request.getUserPrincipal().getName();
         if(username != null && !"".equals(username)){
             UserInfo userInfo = userService.findByUsername(username);
